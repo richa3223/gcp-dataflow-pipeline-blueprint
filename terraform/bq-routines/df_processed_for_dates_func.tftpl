@@ -1,0 +1,22 @@
+SELECT
+  daily.created_ts,
+  daily.correlation_id,
+  daily.record_status,
+  daily.record_date,
+  daily.valid_from,
+  daily.store_id,
+  daily.product_id,
+  daily.customer_id,
+  daily.country_id,
+  daily.order_id,
+  daily.quantity,
+  daily.value,
+  daily.promotion_id,
+  daily.country,
+  daily.region,
+  daily.product_name,
+  daily.product_category,
+  daily.store_name,
+  daily.fingerprint
+FROM `${proj}.${dataset}.df_processed_view` daily
+WHERE daily.record_date BETWEEN start_date AND end_date

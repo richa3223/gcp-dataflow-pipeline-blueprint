@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "name": "RetailProducts",
+  "fields": [
+    {
+      "name": "sku",
+      "type": "string",
+      "doc": "Unique product identifier"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "doc": "Product name and short description"
+    },
+    {
+      "name": "category",
+      "type": "string",
+      "doc": "Product retail category"
+    }
+  ]
+}

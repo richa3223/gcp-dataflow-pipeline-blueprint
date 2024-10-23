@@ -1,0 +1,44 @@
+WITH fingerprint_ts AS (
+    SELECT
+        record_date,
+        fingerprint,
+        MAX(created_ts) AS ts
+    FROM `${proj}.${dataset}.df_processed_data`
+    WHERE record_date > DATE_SUB(CURRENT_DATE(), INTERVAL 3 MONTH)
+    AND record_status = 'ACTIVE'    
+    AND valid_from >= TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY)
+    GROUP BY      
+        record_date,      
+        fingerprint
+    ORDER BY
+      record_date,
+      fingerprint,
+      ts DESC
+)
+SELECT
+  fpts.ts AS created_ts,
+  dpd.correlation_id,
+  dpd.record_status,
+  dpd.record_date,
+  dpd.valid_from,
+  dpd.store_id,
+  dpd.product_id,
+  dpd.customer_id,
+  dpd.country_id,
+  dpd.order_id,
+  dpd.quantity,
+  dpd.value,
+  dpd.promotion_id,
+  dpd.country,
+  dpd.region,
+  dpd.product_name,
+  dpd.product_category,
+  dpd.store_name,
+  dpd.fingerprint
+FROM  
+  fingerprint_ts fpts,
+  `${proj}.${dataset}.df_processed_data` dpd
+WHERE fpts.record_date = dpd.record_date
+AND fpts.fingerprint = dpd.fingerprint
+AND fpts.ts = dpd.created_ts
+;
